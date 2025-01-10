@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: DB_Replication
+  datasource:
+    primary:
+      url: jdbc:postgresql://localhost:5432/mydb
+      username: admin
+      password: admin
+    replica:
+      url: jdbc:postgresql://localhost:5433/mydb
+      username: admin
+      password: admin
+  flyway:
+    enabled: true
+    url: ${spring.datasource.primary.url}
+    user: ${spring.datasource.primary.username}
+    password: ${spring.datasource.primary.password}
+

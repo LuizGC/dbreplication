@@ -14,17 +14,16 @@ import java.util.List;
 @RequestMapping("client")
 public class ClientController {
 
-    private final ClientRepository repository;
-
+    private final ClientService clientService;
 
     @PostMapping
-    public void insert(@RequestBody Client client){
-        repository.save(client);
+    public void insert(@RequestBody Client client) {
+        clientService.save(client);
     }
 
     @GetMapping
-    public List<Client> list(){
-        return repository.findAll();
+    public List<Client> list() {
+        return clientService.findAll();
     }
 
 }
