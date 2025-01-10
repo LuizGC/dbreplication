@@ -1,0 +1,33 @@
+services:
+  primary:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: mydb
+    volumes:
+      - ./primary-init.sql:/docker-entrypoint-initdb.d/primary-init.sql
+      - ./primary-entrypoint.sh:/docker-entrypoint-initdb.d/primary-entrypoint.sh
+
+    ports:
+      - "5432:5432"
+
+  replica:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: replicator
+      POSTGRES_PASSWORD: replicator_password
+    depends_on:
+      - primary
+    volumes:
+      - ./replica-init.sh:/docker-entrypoint-initdb.d/replica-init.sh
+    ports:
+      - "5433:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: a@a.com
+      PGADMIN_DEFAULT_PASSWORD: a
+    ports:
+      - "8888:80"
