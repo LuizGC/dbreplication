@@ -1,4 +1,4 @@
-package com.example.demo.configs.dbs;
+package com.example.demo.configs.datasource;
 
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;

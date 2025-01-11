@@ -1,8 +1,10 @@
-package com.example.demo.configs.dbs;
+package com.example.demo.configs.datasource;
 
+import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
@@ -31,18 +33,21 @@ public class DataSourceConfig {
     private String replicaPassword;
 
     private DataSource primaryDataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setUrl(primaryUrl);
+        HikariDataSource dataSource = new HikariDataSource();
+        dataSource.setJdbcUrl(primaryUrl);
         dataSource.setUsername(primaryUsername);
         dataSource.setPassword(primaryPassword);
+        dataSource.setMaximumPoolSize(30);
         return dataSource;
     }
 
     private DataSource replicaDataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setUrl(replicaUrl);
+        HikariDataSource dataSource = new HikariDataSource();
+        dataSource.setJdbcUrl(replicaUrl);
         dataSource.setUsername(replicaUsername);
         dataSource.setPassword(replicaPassword);
+        dataSource.setMaximumPoolSize(30);
+        dataSource.setReadOnly(true);
         return dataSource;
     }
 

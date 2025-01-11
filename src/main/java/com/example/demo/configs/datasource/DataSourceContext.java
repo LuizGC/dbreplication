@@ -1,4 +1,4 @@
-package com.example.demo.configs.dbs;
+package com.example.demo.configs.datasource;
 
 import java.util.Optional;
 
