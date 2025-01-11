@@ -1,7 +1,5 @@
 package com.example.demo.configs.datasource;
 
-import static com.example.demo.configs.datasource.DataSourceContextType.PRIMARY;
-import static com.example.demo.configs.datasource.DataSourceContextType.REPLICA;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -14,19 +12,19 @@ import java.util.Map;
 @Setter
 @Configuration
 @ConfigurationProperties(prefix = "spring.datasource")
-public class DataSourceConfig {
+public class DataSourceContextConfig {
 
     private Map<String, String> primary;
     private Map<String, String> replica;
 
     @Bean
-    public DataSourceRouting actualDataSource() {
-        DataSourceRouting routingDataSource = new DataSourceRouting();
+    public DataSourceContextRouting routingDataSource() {
+        DataSourceContextRouting routingDataSource = new DataSourceContextRouting();
         DataSource primaryDataSource = createDatasource(primary);
         DataSource replicaDataSource = createDatasource(replica);
         routingDataSource.setTargetDataSources(Map.of(
-                PRIMARY, primaryDataSource,
-                REPLICA, replicaDataSource
+                false, primaryDataSource,
+                true, replicaDataSource
         ));
         routingDataSource.setDefaultTargetDataSource(primaryDataSource);
         return routingDataSource;
