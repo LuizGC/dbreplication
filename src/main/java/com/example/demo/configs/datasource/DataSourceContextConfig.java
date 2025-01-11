@@ -20,19 +20,21 @@ public class DataSourceContextConfig {
 
     @Bean
     public DataSource dataSource() {
-        DataSource primaryDataSource = createDatasource(primary);
-        DataSource replicaDataSource = createDatasource(replica);
-        LazyConnectionDataSourceProxy routingDataSource = new LazyConnectionDataSourceProxy(primaryDataSource);
+        DataSource primaryDataSource = createDatasource(primary, false);
+        DataSource replicaDataSource = createDatasource(replica, true);
+        LazyConnectionDataSourceProxy routingDataSource = new LazyConnectionDataSourceProxy();
+        routingDataSource.setTargetDataSource(primaryDataSource);
         routingDataSource.setReadOnlyDataSource(replicaDataSource);
         return routingDataSource;
     }
 
-    private DataSource createDatasource(Map<String, String> datasourceProperties) {
+    private HikariDataSource createDatasource(Map<String, String> datasourceProperties, boolean readOnly) {
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setJdbcUrl(getUrl(datasourceProperties));
         dataSource.setUsername(getUsername(datasourceProperties));
         dataSource.setPassword(getPassword(datasourceProperties));
         dataSource.setMaximumPoolSize(getMaximumPoolSize(datasourceProperties));
+        dataSource.setReadOnly(readOnly);
         return dataSource;
     }
 
