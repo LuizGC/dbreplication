@@ -6,10 +6,12 @@ spring:
       url: jdbc:postgresql://localhost:5432/mydb
       username: admin
       password: admin
+      maximum-pool-size: 30
     replica:
       url: jdbc:postgresql://localhost:5433/mydb
       username: admin
       password: admin
+      maximum-pool-size: 30
   flyway:
     enabled: true
     url: ${spring.datasource.primary.url}
