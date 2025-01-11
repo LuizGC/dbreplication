@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 
 import javax.sql.DataSource;
 import java.util.Map;
@@ -18,15 +19,11 @@ public class DataSourceContextConfig {
     private Map<String, String> replica;
 
     @Bean
-    public DataSourceContextRouting routingDataSource() {
-        DataSourceContextRouting routingDataSource = new DataSourceContextRouting();
+    public DataSource dataSource() {
         DataSource primaryDataSource = createDatasource(primary);
         DataSource replicaDataSource = createDatasource(replica);
-        routingDataSource.setTargetDataSources(Map.of(
-                false, primaryDataSource,
-                true, replicaDataSource
-        ));
-        routingDataSource.setDefaultTargetDataSource(primaryDataSource);
+        LazyConnectionDataSourceProxy routingDataSource = new LazyConnectionDataSourceProxy(primaryDataSource);
+        routingDataSource.setReadOnlyDataSource(replicaDataSource);
         return routingDataSource;
     }
 
