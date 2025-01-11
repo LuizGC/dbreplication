@@ -13,15 +13,15 @@ public class DataSourceAspect {
     @Before("@annotation(transactional) && execution(* *(..))")
     public void beforeTransactionalMethod(Transactional transactional) {
         if (transactional.readOnly()) {
-            DataSourceRouting.usePrimarySource();
+            DataSourceRouting.usePrimaryContext();
         } else {
-            DataSourceRouting.useReplicaSource();
+            DataSourceRouting.useReplicaContext();
         }
     }
 
     @After("@annotation(transactional) && execution(* *(..))")
     public void afterTransactionalMethod(Transactional transactional) {
-        DataSourceRouting.clear();
+        DataSourceRouting.clearContext();
     }
 }
 
