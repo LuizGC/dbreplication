@@ -1,7 +1,5 @@
 package com.example.demo.configs.datasource;
 
-import static com.example.demo.configs.datasource.DataSourceType.READ_ONLY;
-import static com.example.demo.configs.datasource.DataSourceType.READ_WRITE;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -15,9 +13,9 @@ public class DataSourceAspect {
     @Before("@annotation(transactional) && execution(* *(..))")
     public void beforeTransactionalMethod(Transactional transactional) {
         if (transactional.readOnly()) {
-            DataSourceRouting.setCurrentDataSource(READ_ONLY);
+            DataSourceRouting.usePrimarySource();
         } else {
-            DataSourceRouting.setCurrentDataSource(READ_WRITE);
+            DataSourceRouting.useReplicaSource();
         }
     }
 

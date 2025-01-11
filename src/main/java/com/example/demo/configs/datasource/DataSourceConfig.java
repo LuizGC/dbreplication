@@ -1,7 +1,5 @@
 package com.example.demo.configs.datasource;
 
-import static com.example.demo.configs.datasource.DataSourceType.READ_ONLY;
-import static com.example.demo.configs.datasource.DataSourceType.READ_WRITE;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -25,8 +23,8 @@ public class DataSourceConfig {
         DataSource primaryDataSource = createDatasource(primary);
         DataSource replicaDataSource = createDatasource(replica);
         routingDataSource.setTargetDataSources(Map.of(
-                READ_WRITE, primaryDataSource,
-                READ_ONLY, replicaDataSource
+                "primary", primaryDataSource,
+                "replica", replicaDataSource
         ));
         routingDataSource.setDefaultTargetDataSource(primaryDataSource);
         return routingDataSource;
