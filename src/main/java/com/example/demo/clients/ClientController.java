@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -24,6 +25,11 @@ public class ClientController {
     @GetMapping
     public List<Client> list() {
         return clientService.findAll();
+    }
+
+    @GetMapping(value = "sum")
+    public BigDecimal sum() {
+        return clientService.sumConsumption();
     }
 
 }

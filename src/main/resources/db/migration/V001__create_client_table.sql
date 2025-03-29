@@ -1,5 +1,5 @@
 CREATE TABLE client (
 	id SERIAL,
 	name VARCHAR,
-	value INT
+    value NUMERIC(10,2)
 );

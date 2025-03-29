@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -20,5 +21,10 @@ public class ClientService {
     @Transactional(readOnly = true)
     public List<Client> findAll() {
         return repository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public BigDecimal sumConsumption() {
+        return repository.calculateConsumption(Math.random() * 10);
     }
 }
