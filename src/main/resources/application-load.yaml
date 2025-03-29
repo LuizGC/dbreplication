@@ -1,4 +1,4 @@
-threads: 1
+threads: 4
 connection-pool: 1
 
 spring:
@@ -6,12 +6,12 @@ spring:
     name: DB_Replication
   datasource:
     primary:
-      url: jdbc:postgresql://localhost:5432/mydb
+      url: jdbc:postgresql://db:5432/mydb
       username: admin
       password: admin
       maximum-pool-size: ${connection-pool}
     replica:
-      url: jdbc:postgresql://localhost:5433/mydb
+      url: jdbc:postgresql://db:5432/mydb
       username: admin
       password: admin
       maximum-pool-size: ${connection-pool}

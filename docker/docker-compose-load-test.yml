@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: mydb
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "admin" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: 1.25
+          memory: 2500MB
+
+  app:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile-App
+    environment:
+      SPRING_PROFILES_ACTIVE: load
+    deploy:
+      resources:
+        limits:
+          cpus: 0.25
+          memory: 500MB
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+  load:
+    image: locustio/locust
+    ports:
+      - "8089:8089"
+    volumes:
+      - ../loadtest/locustfile.py:/locustfile.py
+    command: -f /locustfile.py
